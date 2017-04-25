@@ -1,0 +1,47 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+        mapstructVersion = '1.2.0.Beta2'
+        lombokVersion = '1.16.14'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+    id 'net.ltgt.apt' version '0.10'   
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+compileJava {
+    options.compilerArgs = [
+        '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('mysql:mysql-connector-java')
+	
+	compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
+    apt "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"	
+			
+	testCompile 'junit:junit:4.12'	
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
